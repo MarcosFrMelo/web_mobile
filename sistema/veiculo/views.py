@@ -2,8 +2,9 @@
 
 from django.views.generic import ListView
 from veiculo.models import Veiculo
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class ListarVeiculos(ListView):
+class ListarVeiculos(LoginRequiredMixin, ListView):
     """
     View para listar veiculos cadastrados.
     """

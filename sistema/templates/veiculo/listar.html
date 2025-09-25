@@ -10,6 +10,12 @@
   .table-vehicles tbody tr:hover { background-color: #f8f9fa; }
   .table-vehicles th, .table-vehicles td { vertical-align: middle; }
   .marca { font-weight: 600; letter-spacing: .3px; text-transform: uppercase; }
+  .vehicle-image {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
 </style>
 {% endblock %}
 
@@ -27,16 +33,20 @@
           <table class="table table-hover table-striped table-bordered m-0 table-vehicles">
             <thead class="table-dark">
               <tr>
+                <th style="width: 15%">Imagem</th>
                 <th style="width: 18%">Marca</th>
-                <th style="width: 32%">Modelo</th>
+                <th style="width: 27%">Modelo</th>
                 <th style="width: 10%">Ano</th>
-                <th style="width: 20%">Cor</th>
-                <th style="width: 20%">Combustível</th>
+                <th style="width: 15%">Cor</th>
+                <th style="width: 15%">Combustível</th>
               </tr>
             </thead>
             <tbody>
               {% for v in lista_veiculos %}
                 <tr>
+                  <td class="text-center">
+                    <img src="{% static 'img/OIP.jpg' %}" alt="Foto do {{ v.modelo }}" class="vehicle-image">
+                  </td>
                   <td><span class="marca">{{ v.get_marca_display }}</span></td>
                   <td>{{ v.modelo }}</td>
                   <td><span class="badge text-bg-secondary">{{ v.ano }}</span></td>
