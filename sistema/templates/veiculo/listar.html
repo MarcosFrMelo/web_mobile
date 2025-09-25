@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titulo %}Veículos{% endblock %}
+
+{% block css_local %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+<style>
+  /* Fallback caso css/veiculo.css não esteja presente */
+  .table-vehicles tbody tr:hover { background-color: #f8f9fa; }
+  .table-vehicles th, .table-vehicles td { vertical-align: middle; }
+  .marca { font-weight: 600; letter-spacing: .3px; text-transform: uppercase; }
+</style>
+{% endblock %}
+
+{% block conteudo %}
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 m-0">Lista de Veículos</h1>
+    <span class="badge text-bg-primary">Total: {{ lista_veiculos|length }}</span>
+  </div>
+
+  {% if lista_veiculos %}
+    <div class="card shadow-sm">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover table-striped table-bordered m-0 table-vehicles">
+            <thead class="table-dark">
+              <tr>
+                <th style="width: 18%">Marca</th>
+                <th style="width: 32%">Modelo</th>
+                <th style="width: 10%">Ano</th>
+                <th style="width: 20%">Cor</th>
+                <th style="width: 20%">Combustível</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for v in lista_veiculos %}
+                <tr>
+                  <td><span class="marca">{{ v.get_marca_display }}</span></td>
+                  <td>{{ v.modelo }}</td>
+                  <td><span class="badge text-bg-secondary">{{ v.ano }}</span></td>
+                  <td>{{ v.get_cor_display }}</td>
+                  <td>
+                    <span class="badge
+                      {% if v.get_combustivel_display == 'GASOLINA' %} text-bg-primary
+                      {% elif v.get_combustivel_display == 'ETANOL' %} text-bg-success
+                      {% elif v.get_combustivel_display == 'DIESEL' %} text-bg-dark
+                      {% else %} text-bg-info
+                      {% endif %}">
+                      {{ v.get_combustivel_display }}
+                    </span>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <div class="alert alert-info shadow-sm">Nenhum veículo cadastrado.</div>
+  {% endif %}
+</div>
+{% endblock %}
