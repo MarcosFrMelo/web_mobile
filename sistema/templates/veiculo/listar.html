@@ -6,15 +6,20 @@
 {% block css_local %}
 <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
 <style>
-  /* Fallback caso css/veiculo.css não esteja presente */
-  .table-vehicles tbody tr:hover { background-color: #f8f9fa; }
-  .table-vehicles th, .table-vehicles td { vertical-align: middle; }
-  .marca { font-weight: 600; letter-spacing: .3px; text-transform: uppercase; }
+  .vehicle-card {
+    max-width: 300px;
+    transition: transform 0.2s;
+  }
+  .vehicle-card:hover {
+    transform: translateY(-2px);
+  }
   .vehicle-image {
-    width: 80px;
-    height: 60px;
+    height: 200px;
     object-fit: cover;
-    border-radius: 8px;
+  }
+  .card-img-placeholder {
+    height: 200px;
+    background-color: #f8f9fa;
   }
 </style>
 {% endblock %}
@@ -27,46 +32,43 @@
   </div>
 
   {% if lista_veiculos %}
-    <div class="card shadow-sm">
-      <div class="card-body p-0">
-        <div class="table-responsive">
-          <table class="table table-hover table-striped table-bordered m-0 table-vehicles">
-            <thead class="table-dark">
-              <tr>
-                <th style="width: 15%">Imagem</th>
-                <th style="width: 18%">Marca</th>
-                <th style="width: 27%">Modelo</th>
-                <th style="width: 10%">Ano</th>
-                <th style="width: 15%">Cor</th>
-                <th style="width: 15%">Combustível</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for v in lista_veiculos %}
-                <tr>
-                  <td class="text-center">
-                    <img src="{% static 'img/OIP.jpg' %}" alt="Foto do {{ v.modelo }}" class="vehicle-image">
-                  </td>
-                  <td><span class="marca">{{ v.get_marca_display }}</span></td>
-                  <td>{{ v.modelo }}</td>
-                  <td><span class="badge text-bg-secondary">{{ v.ano }}</span></td>
-                  <td>{{ v.get_cor_display }}</td>
-                  <td>
-                    <span class="badge
-                      {% if v.get_combustivel_display == 'GASOLINA' %} text-bg-primary
-                      {% elif v.get_combustivel_display == 'ETANOL' %} text-bg-success
-                      {% elif v.get_combustivel_display == 'DIESEL' %} text-bg-dark
-                      {% else %} text-bg-info
-                      {% endif %}">
-                      {{ v.get_combustivel_display }}
-                    </span>
-                  </td>
-                </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+    <div class="row g-3">
+      {% for veiculo in lista_veiculos %}
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <div class="card vehicle-card h-100 shadow-sm">
+            {% if veiculo.imagem %}
+              <img src="{{ veiculo.imagem.url }}" class="card-img-top vehicle-image" alt="{{ veiculo.modelo }}">
+            {% else %}
+              <div class="card-img-placeholder d-flex align-items-center justify-content-center text-muted">
+                <i class="fas fa-car fa-2x"></i>
+              </div>
+            {% endif %}
+            
+            <div class="card-body">
+              <h5 class="card-title mb-1">{{ veiculo.get_marca_display }}</h5>
+              <p class="card-text text-muted mb-2">{{ veiculo.modelo }}</p>
+              <div class="text-muted small mb-2">Ano {{ veiculo.ano }}</div>
+              <div class="mb-2">
+                <span class="badge text-bg-secondary me-1">{{ veiculo.get_cor_display }}</span>
+                <span class="badge text-bg-info">{{ veiculo.get_combustivel_display }}</span>
+              </div>
+            </div>
+            
+            <div class="card-footer bg-white border-0 d-flex gap-2 justify-content-end">
+              <a href="#" class="btn btn-sm btn-outline-primary">
+                <i class="bi bi-pencil-fill me-1"></i>Editar
+              </a>
+              <a href="#" class="btn btn-sm btn-outline-danger">
+                <i class="bi bi-trash-fill me-1"></i>Excluir
+              </a>
+            </div>
+          </div>
         </div>
-      </div>
+      {% empty %}
+        <div class="col-12">
+          <div class="alert alert-secondary text-center py-4">Nenhum veículo encontrado.</div>
+        </div>
+      {% endfor %}
     </div>
   {% else %}
     <div class="alert alert-info shadow-sm">Nenhum veículo cadastrado.</div>
