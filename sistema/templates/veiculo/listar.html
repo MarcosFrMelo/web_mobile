@@ -36,8 +36,8 @@
       {% for veiculo in lista_veiculos %}
         <div class="col-12 col-sm-6 col-md-4 col-lg-3">
           <div class="card vehicle-card h-100 shadow-sm">
-            {% if veiculo.imagem %}
-              <img src="{{ veiculo.imagem.url }}" class="card-img-top vehicle-image" alt="{{ veiculo.modelo }}">
+            {% if veiculo.foto %}
+              <img src="{{ veiculo.foto.url }}" class="card-img-top vehicle-image" alt="{{ veiculo.modelo }}">
             {% else %}
               <div class="card-img-placeholder d-flex align-items-center justify-content-center text-muted">
                 <i class="fas fa-car fa-2x"></i>
