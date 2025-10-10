@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from veiculo.models import Veiculo
 from veiculo.forms import FormularioVeiculo
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -27,6 +27,23 @@ class CriarVeiculos(LoginRequiredMixin, CreateView):
     template_name = 'veiculo/novo.html'
     success_url = reverse_lazy('listar-veiculos')
 
+class EditarVeiculos(LoginRequiredMixin, UpdateView):
+    """
+    View para editar um veículo existente.
+    """
+    model = Veiculo
+    form_class = FormularioVeiculo
+    template_name = 'veiculo/editar.html'
+    success_url = reverse_lazy('listar-veiculos')
+
+class DeletarVeiculos(LoginRequiredMixin, DeleteView):
+    """
+    View para deletar um veículo existente.
+    """
+    model = Veiculo
+    template_name = 'veiculo/deletar.html'
+    success_url = reverse_lazy('listar-veiculos')
+
 class FotoVeiculo(View):
     """
     View para exibir a foto de um veículo.
@@ -39,3 +56,4 @@ class FotoVeiculo(View):
             raise Http404("Foto do Veículo não encontrado")
         except Exception as e:
             raise e
+        
