@@ -41,7 +41,7 @@ class DeletarVeiculos(LoginRequiredMixin, DeleteView):
     View para deletar um veículo existente.
     """
     model = Veiculo
-    template_name = 'veiculo/deletar.html'
+    template_name = 'veiculo/deletar.html'  # Apontando para o arquivo correto
     success_url = reverse_lazy('listar-veiculos')
 
 class FotoVeiculo(View):
